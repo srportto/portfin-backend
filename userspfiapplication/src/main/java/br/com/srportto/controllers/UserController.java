@@ -1,6 +1,8 @@
 package br.com.srportto.controllers;
 
-import br.com.srportto.dtos.responses.UserDTO;
+import br.com.srportto.dtos.general.UserDTO;
+import br.com.srportto.dtos.responses.UserDefaultResponse;
+import br.com.srportto.dtos.responses.UserExtendsResponse;
 import br.com.srportto.dtos.responses.UserInsertDTO;
 import br.com.srportto.dtos.responses.UserUpdateDTO;
 import br.com.srportto.services.UserService;
@@ -28,14 +30,14 @@ public class UserController {
     private UserService service;
 
     @GetMapping
-    public ResponseEntity<Page<UserDTO>> findAll(Pageable pageable) {
-        Page<UserDTO> list = service.findAllPaged(pageable);
+    public ResponseEntity<Page<UserDefaultResponse>> findAll(Pageable pageable) {
+        Page<UserDefaultResponse > list = service.findAllPaged(pageable);
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
-        UserDTO dto = service.findById(id);
+    public ResponseEntity<UserExtendsResponse> findById(@PathVariable Long id) {
+        UserExtendsResponse dto = service.findById(id);
         return ResponseEntity.ok().body(dto);
     }
 

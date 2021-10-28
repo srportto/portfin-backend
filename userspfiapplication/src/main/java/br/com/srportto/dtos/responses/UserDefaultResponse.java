@@ -1,7 +1,7 @@
 package br.com.srportto.dtos.responses;
 
-
 import br.com.srportto.dtos.general.UserDTO;
+import br.com.srportto.models.entities.User;
 import br.com.srportto.services.validation.UserInsertValid;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,8 +9,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @UserInsertValid
-public class UserInsertDTO extends UserDTO {
-	private static final long serialVersionUID = 1L;
+public class UserDefaultResponse  extends UserDTO {
 
-	private String password;
+    //Construtor diferenciado
+    public UserDefaultResponse(User entity) {
+        super(entity);
+    }
 }

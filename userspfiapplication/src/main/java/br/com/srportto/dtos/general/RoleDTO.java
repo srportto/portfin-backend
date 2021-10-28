@@ -1,4 +1,4 @@
-package br.com.srportto.dtos.responses;
+package br.com.srportto.dtos.general;
 
 import br.com.srportto.models.entities.Role;
 import lombok.AllArgsConstructor;

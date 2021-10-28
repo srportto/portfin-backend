@@ -1,5 +1,4 @@
-package br.com.srportto.dtos.responses;
-
+package br.com.srportto.dtos.request;
 
 import br.com.srportto.dtos.general.UserDTO;
 import br.com.srportto.services.validation.UserInsertValid;
@@ -9,8 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @UserInsertValid
-public class UserInsertDTO extends UserDTO {
-	private static final long serialVersionUID = 1L;
+public class UserPostRequest  extends UserDTO {
+    private static final long serialVersionUID = 1L;
 
-	private String password;
+    private String password;
 }

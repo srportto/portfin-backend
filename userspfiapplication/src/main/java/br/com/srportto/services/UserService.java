@@ -1,7 +1,9 @@
 package br.com.srportto.services;
 
-import br.com.srportto.dtos.responses.RoleDTO;
-import br.com.srportto.dtos.responses.UserDTO;
+import br.com.srportto.dtos.general.RoleDTO;
+import br.com.srportto.dtos.general.UserDTO;
+import br.com.srportto.dtos.responses.UserDefaultResponse;
+import br.com.srportto.dtos.responses.UserExtendsResponse;
 import br.com.srportto.dtos.responses.UserInsertDTO;
 import br.com.srportto.dtos.responses.UserUpdateDTO;
 import br.com.srportto.exceptions.DatabaseException;
@@ -37,16 +39,16 @@ public class UserService implements UserDetailsService {
 	private RoleRepository roleRepository;
 	
 	@Transactional(readOnly = true)
-	public Page<UserDTO> findAllPaged(Pageable pageable) {
+	public Page<UserDefaultResponse> findAllPaged(Pageable pageable) {
 		Page<User> list = repository.findAll(pageable);
-		return list.map(x -> new UserDTO(x));
+		return list.map(x -> new UserDefaultResponse(x));
 	}
 
 	@Transactional(readOnly = true)
-	public UserDTO findById(Long id) {
+	public UserExtendsResponse findById(Long id) {
 		Optional<User> obj = repository.findById(id);
 		User entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-		return new UserDTO(entity);
+		return new UserExtendsResponse(entity);
 	}
 
 	@Transactional

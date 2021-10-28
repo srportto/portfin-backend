@@ -1,4 +1,4 @@
-package br.com.srportto.dtos.responses;
+package br.com.srportto.dtos.general;
 
 import br.com.srportto.models.entities.User;
 import lombok.AllArgsConstructor;
@@ -25,8 +25,6 @@ public class UserDTO implements Serializable {
 
 	@Email(message = "Favor entrar um email válido")
 	private String email;
-	
-	Set<RoleDTO> roles = new HashSet<>();
 
 	//? Construtor diferenciado
 	public UserDTO(User entity) {
@@ -34,6 +32,5 @@ public class UserDTO implements Serializable {
 		firstName = entity.getFirstName();
 		lastName = entity.getLastName();
 		email = entity.getEmail();
-		entity.getRoles().forEach(role -> this.roles.add(new RoleDTO(role)));
 	}
 }
