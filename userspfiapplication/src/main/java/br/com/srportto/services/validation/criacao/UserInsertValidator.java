@@ -1,6 +1,6 @@
-package br.com.srportto.services.validation;
+package br.com.srportto.services.validation.criacao;
 
-import br.com.srportto.dtos.responses.UserInsertDTO;
+import br.com.srportto.dtos.request.UserPostRequestDTO;
 import br.com.srportto.exceptions.FieldMessage;
 import br.com.srportto.models.entities.User;
 import br.com.srportto.repositories.UserRepository;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
-public class UserInsertValidator implements ConstraintValidator<UserInsertValid, UserInsertDTO> {
+public class UserInsertValidator implements ConstraintValidator<UserInsertValid, UserPostRequestDTO> {
 	private UserRepository repository;
 	
 	@Override
@@ -20,7 +20,7 @@ public class UserInsertValidator implements ConstraintValidator<UserInsertValid,
 	}
 
 	@Override
-	public boolean isValid(UserInsertDTO dto, ConstraintValidatorContext context) {
+	public boolean isValid(UserPostRequestDTO dto, ConstraintValidatorContext context) {
 		
 		List<FieldMessage> list = new ArrayList<>();
 		

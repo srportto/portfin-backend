@@ -19,14 +19,16 @@ public class UserDTO implements Serializable {
 
 	private Long id;
 	
-	@NotBlank(message = "Campo obrigatório")
+	@NotBlank(message = "Campo de primeiro nome é obrigatório")
 	private String firstName;
+
+	@NotBlank(message = "Campo de ultimo nome é obrigatório")
 	private String lastName;
 
-	@Email(message = "Favor entrar um email válido")
+	@Email(message = "Por favor, informe um email válido")
 	private String email;
 
-	//? Construtor diferenciado
+	//Construtor diferenciado
 	public UserDTO(User entity) {
 		id = entity.getId();
 		firstName = entity.getFirstName();

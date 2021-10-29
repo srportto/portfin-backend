@@ -2,14 +2,14 @@ package br.com.srportto.services;
 
 import br.com.srportto.dtos.general.RoleDTO;
 import br.com.srportto.dtos.general.UserDTO;
-import br.com.srportto.dtos.responses.UserDefaultResponse;
-import br.com.srportto.dtos.responses.UserExtendsResponse;
-import br.com.srportto.dtos.responses.UserInsertDTO;
-import br.com.srportto.dtos.responses.UserUpdateDTO;
+import br.com.srportto.dtos.request.UserPostRequestDTO;
+import br.com.srportto.dtos.responses.UserDefaultResponseDTO;
+import br.com.srportto.dtos.responses.UserExtendsResponseDTO;
 import br.com.srportto.exceptions.DatabaseException;
 import br.com.srportto.exceptions.ResourceNotFoundException;
 import br.com.srportto.models.entities.Role;
 import br.com.srportto.models.entities.User;
+import br.com.srportto.models.enums.NivelPermissaoEnum;
 import br.com.srportto.repositories.RoleRepository;
 import br.com.srportto.repositories.UserRepository;
 import lombok.AllArgsConstructor;
@@ -39,25 +39,24 @@ public class UserService implements UserDetailsService {
 	private RoleRepository roleRepository;
 	
 	@Transactional(readOnly = true)
-	public Page<UserDefaultResponse> findAllPaged(Pageable pageable) {
+	public Page<UserDefaultResponseDTO> findAllPaged(Pageable pageable) {
 		Page<User> list = repository.findAll(pageable);
-		return list.map(x -> new UserDefaultResponse(x));
+		return list.map(x -> new UserDefaultResponseDTO(x));
 	}
 
 	@Transactional(readOnly = true)
-	public UserExtendsResponse findById(Long id) {
+	public UserExtendsResponseDTO findById(Long id) {
 		Optional<User> obj = repository.findById(id);
-		User entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-		return new UserExtendsResponse(entity);
+		User entity = obj.orElseThrow(() -> new ResourceNotFoundException("Usuario não encontrado"));
+		return new UserExtendsResponseDTO(entity);
 	}
 
 	@Transactional
-	public UserDTO insert(UserInsertDTO dto) {
+	public UserDefaultResponseDTO insert(UserPostRequestDTO dto) {
 		User entity = new User();
 		copyDtoToEntity(dto, entity);
-		entity.setPassword(passwordEncoder.encode(dto.getPassword()));
 		entity = repository.save(entity);
-		return new UserDTO(entity);
+		return new UserDefaultResponseDTO(entity);
 	}
 
 	@Transactional
@@ -89,12 +88,21 @@ public class UserService implements UserDetailsService {
 		entity.setFirstName(dto.getFirstName());
 		entity.setLastName(dto.getLastName());
 		entity.setEmail(dto.getEmail());
-		
+
 		entity.getRoles().clear();
-		for (RoleDTO roleDto : dto.getRoles()) {
-			Role role = roleRepository.getOne(roleDto.getId());
+
+		if(dto instanceof UserPostRequestDTO){
+			var userPostRequestDTO = (UserPostRequestDTO) dto;
+			Role role = roleRepository.getOne(NivelPermissaoEnum.ROLE_CLIENTE.getNivelPermissao());
 			entity.getRoles().add(role);
+			entity.setPassword(passwordEncoder.encode(userPostRequestDTO.getPassword()));
 		}
+		
+
+//		for (RoleDTO roleDto : dto.getRoles()) {
+//			Role role = roleRepository.getOne(roleDto.getId());
+//			entity.getRoles().add(role);
+//		}
 	}
 
 	@Override

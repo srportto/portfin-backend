@@ -1,10 +1,9 @@
 package br.com.srportto.controllers;
 
 import br.com.srportto.dtos.general.UserDTO;
-import br.com.srportto.dtos.responses.UserDefaultResponse;
-import br.com.srportto.dtos.responses.UserExtendsResponse;
-import br.com.srportto.dtos.responses.UserInsertDTO;
-import br.com.srportto.dtos.responses.UserUpdateDTO;
+import br.com.srportto.dtos.request.UserPostRequestDTO;
+import br.com.srportto.dtos.responses.UserDefaultResponseDTO;
+import br.com.srportto.dtos.responses.UserExtendsResponseDTO;
 import br.com.srportto.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -30,20 +29,20 @@ public class UserController {
     private UserService service;
 
     @GetMapping
-    public ResponseEntity<Page<UserDefaultResponse>> findAll(Pageable pageable) {
-        Page<UserDefaultResponse > list = service.findAllPaged(pageable);
+    public ResponseEntity<Page<UserDefaultResponseDTO>> findAll(Pageable pageable) {
+        Page<UserDefaultResponseDTO> list = service.findAllPaged(pageable);
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<UserExtendsResponse> findById(@PathVariable Long id) {
-        UserExtendsResponse dto = service.findById(id);
+    public ResponseEntity<UserExtendsResponseDTO> findById(@PathVariable Long id) {
+        UserExtendsResponseDTO dto = service.findById(id);
         return ResponseEntity.ok().body(dto);
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> insert(@RequestBody @Valid UserInsertDTO dto) {
-        UserDTO newDto = service.insert(dto);
+    public ResponseEntity<UserDefaultResponseDTO> insert(@RequestBody @Valid UserPostRequestDTO dto) {
+        var newDto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(newDto.getId()).toUri();
         return ResponseEntity.created(uri).body(newDto);
