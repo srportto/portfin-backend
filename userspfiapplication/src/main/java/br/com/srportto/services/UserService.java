@@ -3,6 +3,7 @@ package br.com.srportto.services;
 import br.com.srportto.dtos.general.RoleDTO;
 import br.com.srportto.dtos.general.UserDTO;
 import br.com.srportto.dtos.request.UserPostRequestDTO;
+import br.com.srportto.dtos.request.UserUpdateRequestDTO;
 import br.com.srportto.dtos.responses.UserDefaultResponseDTO;
 import br.com.srportto.dtos.responses.UserExtendsResponseDTO;
 import br.com.srportto.exceptions.DatabaseException;
@@ -60,12 +61,12 @@ public class UserService implements UserDetailsService {
 	}
 
 	@Transactional
-	public UserDTO update(Long id, UserUpdateDTO dto) {
+	public UserExtendsResponseDTO update(Long id, UserUpdateRequestDTO dto) {
 		try {
 			User entity = repository.getOne(id);
 			copyDtoToEntity(dto, entity);
 			entity = repository.save(entity);
-			return new UserDTO(entity);
+			return new UserExtendsResponseDTO(entity);
 		}
 		catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException("Id not found " + id);
@@ -92,17 +93,26 @@ public class UserService implements UserDetailsService {
 		entity.getRoles().clear();
 
 		if(dto instanceof UserPostRequestDTO){
-			var userPostRequestDTO = (UserPostRequestDTO) dto;
+			var userPostRequest = (UserPostRequestDTO) dto;
 			Role role = roleRepository.getOne(NivelPermissaoEnum.ROLE_CLIENTE.getNivelPermissao());
 			entity.getRoles().add(role);
-			entity.setPassword(passwordEncoder.encode(userPostRequestDTO.getPassword()));
+			entity.setPassword(passwordEncoder.encode(userPostRequest.getPassword()));
 		}
-		
 
-//		for (RoleDTO roleDto : dto.getRoles()) {
-//			Role role = roleRepository.getOne(roleDto.getId());
-//			entity.getRoles().add(role);
-//		}
+		if(dto instanceof UserUpdateRequestDTO){
+			var userUpdateRequest = (UserUpdateRequestDTO) dto;
+			var rolesUsers = userUpdateRequest.getRoles();
+
+			for(RoleDTO roleUser :rolesUsers){
+				var nivelPermissao = NivelPermissaoEnum.obterNomePermissao(roleUser.getId());
+				var roleEntity = roleRepository.getOne(nivelPermissao.getNivelPermissao());
+				entity.getRoles().add(roleEntity);
+			}
+
+			//encode/criptografia de senha do usuario
+			var passwordCripto = passwordEncoder.encode(userUpdateRequest.getPassword());
+			entity.setPassword(passwordCripto);
+		}
 	}
 
 	@Override

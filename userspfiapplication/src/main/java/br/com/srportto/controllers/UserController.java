@@ -2,6 +2,7 @@ package br.com.srportto.controllers;
 
 import br.com.srportto.dtos.general.UserDTO;
 import br.com.srportto.dtos.request.UserPostRequestDTO;
+import br.com.srportto.dtos.request.UserUpdateRequestDTO;
 import br.com.srportto.dtos.responses.UserDefaultResponseDTO;
 import br.com.srportto.dtos.responses.UserExtendsResponseDTO;
 import br.com.srportto.services.UserService;
@@ -49,7 +50,7 @@ public class UserController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody @Valid UserUpdateDTO dto) {
+    public ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody @Valid UserUpdateRequestDTO dto) {
         UserDTO newDto = service.update(id, dto);
         return ResponseEntity.ok().body(newDto);
     }

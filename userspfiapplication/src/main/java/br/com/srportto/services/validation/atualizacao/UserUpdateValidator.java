@@ -1,9 +1,7 @@
 package br.com.srportto.services.validation.atualizacao;
 
-import br.com.srportto.dtos.request.UserPostRequestDTO;
 import br.com.srportto.dtos.request.UserUpdateRequestDTO;
 import br.com.srportto.exceptions.FieldMessage;
-import br.com.srportto.models.entities.User;
 import br.com.srportto.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 
@@ -24,10 +22,12 @@ public class UserUpdateValidator implements ConstraintValidator<UserUpdateValid,
 	public boolean isValid(UserUpdateRequestDTO dto, ConstraintValidatorContext context) {
 		
 		List<FieldMessage> list = new ArrayList<>();
-		
-		User user = repository.findByEmail(dto.getEmail());
+
+		var emailUser = dto.getEmail();
+		var user = repository.findByEmail(emailUser);
+
 		if (user != null) {
-			list.add(new FieldMessage("email", "Email já existe"));
+			list.add(new FieldMessage("email", "Nao é possivel atualizar para este email, está em uso por outro usuario"));
 		}
 
 		for (FieldMessage e : list) {

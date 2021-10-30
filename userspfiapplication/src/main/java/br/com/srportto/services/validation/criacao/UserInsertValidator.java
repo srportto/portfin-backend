@@ -2,9 +2,10 @@ package br.com.srportto.services.validation.criacao;
 
 import br.com.srportto.dtos.request.UserPostRequestDTO;
 import br.com.srportto.exceptions.FieldMessage;
-import br.com.srportto.models.entities.User;
 import br.com.srportto.repositories.UserRepository;
 import lombok.AllArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @AllArgsConstructor
 public class UserInsertValidator implements ConstraintValidator<UserInsertValid, UserPostRequestDTO> {
+	private static final Logger logger = LogManager.getLogger(UserInsertValidator.class);
 	private UserRepository repository;
 	
 	@Override
@@ -23,10 +25,11 @@ public class UserInsertValidator implements ConstraintValidator<UserInsertValid,
 	public boolean isValid(UserPostRequestDTO dto, ConstraintValidatorContext context) {
 		
 		List<FieldMessage> list = new ArrayList<>();
-		
-		User user = repository.findByEmail(dto.getEmail());
+		var user = repository.findByEmail(dto.getEmail());
+
 		if (user != null) {
-			list.add(new FieldMessage("email", "Email já existe"));
+			logger.info(String.format("Não é possivel cadastrar este email, está em uso por outro usuario: %s",user.getEmail()));
+			list.add(new FieldMessage("email", "Não é possivel cadastrar este email, está em uso por outro usuario"));
 		}
 
 		for (FieldMessage e : list) {

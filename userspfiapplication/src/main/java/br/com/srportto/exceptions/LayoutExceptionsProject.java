@@ -11,7 +11,6 @@ import java.time.Instant;
 //? Essa classe eh usada para montar a "cara" das mensagens de erro do projeto
 //?---------------------------------------------------------------------------------------
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class LayoutExceptionsProject implements Serializable {
     // *----------------------------------------------

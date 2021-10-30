@@ -1,9 +1,9 @@
 package br.com.srportto.models.enums;
 
 public enum NivelPermissaoEnum {
-    ROLE_CLIENTE(3L),
+    ROLE_ADMINISTRADOR(3L),
     ROLE_OPERADOR(2L),
-    ROLE_ADMINISTRADOR(1L);
+    ROLE_CLIENTE(1L);
 
     private long nivelPermissao;
 
