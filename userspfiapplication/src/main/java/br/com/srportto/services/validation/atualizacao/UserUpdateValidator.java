@@ -22,7 +22,6 @@ public class UserUpdateValidator implements ConstraintValidator<UserUpdateValid,
 	public boolean isValid(UserUpdateRequestDTO dto, ConstraintValidatorContext context) {
 		
 		List<FieldMessage> list = new ArrayList<>();
-
 		var emailUser = dto.getEmail();
 		var user = repository.findByEmail(emailUser);
 
@@ -35,6 +34,8 @@ public class UserUpdateValidator implements ConstraintValidator<UserUpdateValid,
 			context.buildConstraintViolationWithTemplate(e.getMessage()).addPropertyNode(e.getFieldName())
 					.addConstraintViolation();
 		}
+
+		//Retorno booleano (true/false) de acordo com a resposta da pergunta se a lista esta preenchida ou nao
 		return list.isEmpty();
 	}
 }

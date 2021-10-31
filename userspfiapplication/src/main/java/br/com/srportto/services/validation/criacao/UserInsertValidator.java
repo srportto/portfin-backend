@@ -28,8 +28,8 @@ public class UserInsertValidator implements ConstraintValidator<UserInsertValid,
 		var user = repository.findByEmail(dto.getEmail());
 
 		if (user != null) {
-			log.info(String.format("Não é possivel cadastrar este email, está em uso por outro usuario: %s",user.getEmail()));
-			list.add(new FieldMessage("email", "Não é possivel cadastrar este email, está em uso por outro usuario"));
+			log.info(String.format("Não é possivel cadastrar este email, está em uso por outro usuário: %s",user.getEmail()));
+			list.add(new FieldMessage("email", "Não é possível cadastrar este email, está em uso por outro usuário"));
 		}
 
 		for (FieldMessage e : list) {
@@ -37,6 +37,8 @@ public class UserInsertValidator implements ConstraintValidator<UserInsertValid,
 			context.buildConstraintViolationWithTemplate(e.getMessage()).addPropertyNode(e.getFieldName())
 					.addConstraintViolation();
 		}
+
+		//Retorno booleano (true/false) de acordo com a resposta da pergunta se a lista esta preenchida ou nao
 		return list.isEmpty();
 	}
 }
