@@ -26,7 +26,7 @@ public class UserUpdateValidator implements ConstraintValidator<UserUpdateValid,
 		var user = repository.findByEmail(emailUser);
 
 		if (user != null) {
-			list.add(new FieldMessage("email", "Nao é possivel atualizar para este email, está em uso por outro usuario"));
+			list.add(new FieldMessage("email", "Nao é possível atualizar para este email, está em uso por outro usuário"));
 		}
 
 		for (FieldMessage e : list) {

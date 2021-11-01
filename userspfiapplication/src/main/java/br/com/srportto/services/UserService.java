@@ -2,7 +2,7 @@ package br.com.srportto.services;
 
 import br.com.srportto.dtos.general.RoleDTO;
 import br.com.srportto.dtos.general.UserDTO;
-import br.com.srportto.dtos.request.UserPostRequestDTO;
+import br.com.srportto.dtos.request.UserInsertRequestDTO;
 import br.com.srportto.dtos.request.UserUpdateRequestDTO;
 import br.com.srportto.dtos.responses.UserDefaultResponseDTO;
 import br.com.srportto.dtos.responses.UserExtendsResponseDTO;
@@ -53,7 +53,7 @@ public class UserService implements UserDetailsService {
 	}
 
 	@Transactional
-	public UserDefaultResponseDTO insert(UserPostRequestDTO dto) {
+	public UserDefaultResponseDTO insert(UserInsertRequestDTO dto) {
 		User entity = new User();
 		copyDtoToEntity(dto, entity);
 		entity = repository.save(entity);
@@ -92,8 +92,8 @@ public class UserService implements UserDetailsService {
 
 		entity.getRoles().clear();
 
-		if(dto instanceof UserPostRequestDTO){
-			var userPostRequest = (UserPostRequestDTO) dto;
+		if(dto instanceof UserInsertRequestDTO){
+			var userPostRequest = (UserInsertRequestDTO) dto;
 			Role role = roleRepository.getOne(NivelPermissaoEnum.ROLE_CLIENTE.getNivelPermissao());
 			entity.getRoles().add(role);
 			entity.setPassword(passwordEncoder.encode(userPostRequest.getPassword()));

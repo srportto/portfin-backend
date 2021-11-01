@@ -1,7 +1,7 @@
 package br.com.srportto.controllers;
 
 import br.com.srportto.dtos.general.UserDTO;
-import br.com.srportto.dtos.request.UserPostRequestDTO;
+import br.com.srportto.dtos.request.UserInsertRequestDTO;
 import br.com.srportto.dtos.request.UserUpdateRequestDTO;
 import br.com.srportto.dtos.responses.UserDefaultResponseDTO;
 import br.com.srportto.dtos.responses.UserExtendsResponseDTO;
@@ -42,7 +42,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDefaultResponseDTO> insert(@RequestBody @Valid UserPostRequestDTO dto) {
+    public ResponseEntity<UserDefaultResponseDTO> insert(@RequestBody @Valid UserInsertRequestDTO dto) {
         var newDto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(newDto.getId()).toUri();

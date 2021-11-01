@@ -2,10 +2,12 @@ package br.com.srportto.dtos.general;
 
 import br.com.srportto.models.entities.Role;
 import br.com.srportto.models.enums.NivelPermissaoEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @Data
@@ -15,6 +17,8 @@ public class RoleDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
+
+	@NotBlank(message = "Campo authority é obrigatório")
 	private String authority;
 
 	//? construtor diferenciado
@@ -29,6 +33,7 @@ public class RoleDTO implements Serializable {
 		authority = permissaoEnum.name();
 	}
 
+	@JsonIgnore
 	public boolean isValid(){
 		var nivelPermissao =	NivelPermissaoEnum.obterNomePermissao(id);
 

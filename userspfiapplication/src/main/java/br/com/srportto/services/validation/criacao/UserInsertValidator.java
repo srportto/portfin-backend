@@ -1,6 +1,6 @@
 package br.com.srportto.services.validation.criacao;
 
-import br.com.srportto.dtos.request.UserPostRequestDTO;
+import br.com.srportto.dtos.request.UserInsertRequestDTO;
 import br.com.srportto.exceptions.FieldMessage;
 import br.com.srportto.repositories.UserRepository;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Log4j2
-public class UserInsertValidator implements ConstraintValidator<UserInsertValid, UserPostRequestDTO> {
+public class UserInsertValidator implements ConstraintValidator<UserInsertValid, UserInsertRequestDTO> {
 
 	private UserRepository repository;
 	
@@ -22,7 +22,7 @@ public class UserInsertValidator implements ConstraintValidator<UserInsertValid,
 	}
 
 	@Override
-	public boolean isValid(UserPostRequestDTO dto, ConstraintValidatorContext context) {
+	public boolean isValid(UserInsertRequestDTO dto, ConstraintValidatorContext context) {
 		
 		List<FieldMessage> list = new ArrayList<>();
 		var user = repository.findByEmail(dto.getEmail());

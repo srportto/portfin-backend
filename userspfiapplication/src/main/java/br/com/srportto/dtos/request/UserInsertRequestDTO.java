@@ -10,8 +10,8 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @Data
 @UserInsertValid
-public class UserPostRequestDTO extends UserDTO {
+public class UserInsertRequestDTO extends UserDTO {
 
-    @NotBlank(message = "Senha precisa ser informada")
+    @NotBlank(message = "Campo password é obrigatório")
     private String password;
 }
